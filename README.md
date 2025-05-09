@@ -5,9 +5,9 @@
 4. Run with `./target/release/arbitrage-timer --exchanges EXCHANGE1 EXCHANGE2 --ticker TICKER` to use the default value for the arbitrage threshold, 0.5%. This can be specified with the `--threshold THRESHOLD` flag. For example, `--threshold 0.01` times how long an arbitrage of over 1% exists. Currently, the script accepts exchange inputs of `hyperliquid` and `binance`.
 
 # EXAMPLE
-`./target/release/arbitrage-timer --exchanges hyperliquid binance --ticker ETH`
+`./target/release/arbitrage-timer --exchanges hyperliquid binance --ticker ETH --threshold 0.0005`
 
-# OUTPUT
+Gave us the output:
 ![Arbitrage Timer Output](assets/arbitrage-timer-demo.png)
 
 # TODO
