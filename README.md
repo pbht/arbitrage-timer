@@ -10,7 +10,7 @@ The objective of this script is to time how long arbitrages above a certain thre
 # EXAMPLE
 `./target/release/arbitrage-timer --exchanges hyperliquid binance --ticker ETH --threshold 0.0005`
 
-Gave us the output:
+Gave us the output: \
 ![Arbitrage Timer Output](assets/arbitrage-timer-demo.png)
 
 # TODO
