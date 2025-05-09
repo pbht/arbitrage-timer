@@ -1,3 +1,6 @@
+# BACKGROUND
+The objective of this script is to time how long arbitrages above a certain threshold exist for an asset accross some specified exchanges. The goal of this is to identify which assets have arbitrage opportunities open for the longest time and target those. For my personal coding development, this was an exercise in bringing together ideas which I have covered separately into a sophisticated and useful program. Namely, I wanted to interact with websockets, spawn multiple asynchronous processes, and utilise a more object-oriented design than I am used to. I have organised the file structure to allow for the easy extension of the script to new exchanges however so far I have only included Binance and Hyperliquid. 
+
 # USAGE
 1. Clone the repo to use it locally with `git clone https://github.com/pbht/arbitrage-timer.git`
 2. cd into the repo with `cd arbitrage-timer`
@@ -12,7 +15,7 @@ Gave us the output:
 
 # TODO
 - [ ] Auto-reconnection logic in case of connection closing
-- [ ] Sending Pong responses to Pings to prevent disconnection
+- [ ] Send Pong responses to Pings to prevent disconnection
 - [ ] More robust input validation
 - [ ] Storage of arbitrage timings to calculate statistics such as mean and variance
 - [ ] Support for more exchanges including MEXC, Gate.io, Kucoin, Bitget, Bybit
