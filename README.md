@@ -18,5 +18,9 @@ Gave us the output: \
 - [ ] Send Pong responses to Pings to prevent disconnection
 - [ ] More robust input validation
 - [ ] Storage of arbitrage timings to calculate statistics such as mean and variance
-- [ ] Support for more exchanges including MEXC, Gate.io, Kucoin, Bitget, Bybit
+- [ ] MEXC support
+- [ ] Gate.io support
+- [ ] Kucoin support
+- [ ] Bitget support
+- [ ] Bybit support
 - [ ] Scan multiple pairs concurrently
