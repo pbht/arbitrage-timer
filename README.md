@@ -19,4 +19,4 @@ Gave us the output: \
 - [ ] More robust input validation
 - [ ] Storage of arbitrage timings to calculate statistics such as mean and variance
 - [ ] Support for more exchanges including MEXC, Gate.io, Kucoin, Bitget, Bybit
-- [ ] Scan multiple pairs
+- [ ] Scan multiple pairs concurrently
