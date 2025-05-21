@@ -1,10 +1,13 @@
 pub mod binance;
 pub mod hyperliquid;
+pub mod gateio;
 
 use std::sync::Arc;
+use crate::types::PriceUpdate;
+
 use binance::Binance;
 use hyperliquid::Hyperliquid;
-use crate::types::PriceUpdate;
+use gateio::GateIo;
 
 use async_trait::async_trait;
 use tokio::sync::mpsc;
@@ -20,6 +23,7 @@ pub fn get_cex(name: &str) -> Option<Arc<dyn Exchange>> {
     match name {
         "binance" => Some(Arc::new(Binance)),
         "hyperliquid" => Some(Arc::new(Hyperliquid)),
+        "gateio" => Some(Arc::new(GateIo)),
         _ => None
     }
 }

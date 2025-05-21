@@ -20,6 +20,7 @@ Gave us the output: \
 - [ ] Storage of arbitrage timings to calculate statistics such as mean and variance
 - [ ] MEXC support
 - [ ] Gate.io support
+- [x] Gate.io support
 - [ ] Kucoin support
 - [ ] Bitget support
 - [ ] Bybit support
