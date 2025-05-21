@@ -19,7 +19,6 @@ Gave us the output: \
 - [ ] More robust input validation
 - [ ] Storage of arbitrage timings to calculate statistics such as mean and variance
 - [ ] MEXC support
-- [ ] Gate.io support
 - [x] Gate.io support
 - [ ] Kucoin support
 - [ ] Bitget support
