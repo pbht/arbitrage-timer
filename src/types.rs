@@ -1,9 +1,18 @@
 use clap::Parser;
+use clap::ValueEnum;
+
+#[derive(ValueEnum, Clone, Debug)]
+pub enum ExchangeArg {
+    Binance,
+    Hyperliquid,
+    GateIo
+}
+
 
 #[derive(Parser, Debug)]
 pub struct Args {
-    #[arg(long, num_args=2)]
-    pub exchanges: Vec<String>,
+    #[arg(long, num_args=2, value_enum)]
+    pub exchanges: Vec<ExchangeArg>,
 
     #[arg(long)]
     pub ticker: String,

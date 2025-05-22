@@ -1,6 +1,5 @@
 mod exchanges;
 mod types;
-mod utils;
 
 use chrono::DateTime;
 use chrono::Utc;
@@ -20,7 +19,7 @@ async fn main() -> Result<(), Box<dyn Error + Send + Sync>> {
     let args = Args::parse();
     let exchanges: Vec<Arc<dyn Exchange>> = args.exchanges
         .iter()
-        .filter_map(|exchange| exchanges::get_cex(&exchange))
+        .filter_map(|exchange| exchanges::get_cex(exchange))
         .collect::<Vec<Arc<dyn Exchange>>>();
 
     let ticker = args.ticker;
