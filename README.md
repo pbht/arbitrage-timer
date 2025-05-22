@@ -7,7 +7,7 @@ The objective of this script is to time how long arbitrages above a certain thre
 3. Build with `cargo build --release`
 4. Run with `./target/release/arbitrage-timer --exchanges EXCHANGE1 EXCHANGE2 --ticker TICKER` to use the default value for the arbitrage threshold, 0.5%. This can be specified with the `--threshold THRESHOLD` flag. For example, `--threshold 0.01` times how long a arbitrage opportunities of over 1% exist. \
    
-The script currently accepts exchange inputs of 
+The script currently accepts the following exchange inputs: 
 - `hyperliquid`
 - `binance`
 - `gate-io`
