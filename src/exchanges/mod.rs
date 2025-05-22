@@ -23,7 +23,6 @@ pub fn get_cex(name: &ExchangeArg) -> Option<Arc<dyn Exchange>> {
     match name {
         ExchangeArg::Binance => Some(Arc::new(Binance)),
         ExchangeArg::Hyperliquid => Some(Arc::new(Hyperliquid)),
-        ExchangeArg::GateIo => Some(Arc::new(GateIo)),
-        _ => None
+        ExchangeArg::GateIo => Some(Arc::new(GateIo))
     }
 }
