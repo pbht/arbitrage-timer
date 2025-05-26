@@ -12,6 +12,22 @@ use gateio::GateIo;
 use async_trait::async_trait;
 use tokio::sync::mpsc;
 use std::error::Error;
+use serde::{Deserialize, Deserializer};
+
+// Helper function to parse websocket stream values
+fn from_str<'de, D>(deserializer: D) -> Result<Option<f64>, D::Error> 
+where 
+    D: Deserializer<'de>
+{
+    let opt = Option::<String>::deserialize(deserializer)?;
+    match opt {
+        Some(s) => {
+            let num = s.parse::<f64>().map_err(serde::de::Error::custom)?;
+            Ok(Some(num))
+        }
+        None => Ok(None)
+    }
+}
 
 #[async_trait]
 pub trait Exchange: Send + Sync {
