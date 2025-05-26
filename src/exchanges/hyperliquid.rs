@@ -1,17 +1,34 @@
 use std::error::Error;
 use async_trait::async_trait;
 use futures_util::{SinkExt, StreamExt};
-use serde_json::{json, Value};
+use serde_json::json;
+use serde::Deserialize;
 use tokio::sync::mpsc;
 use tokio_tungstenite::{connect_async, tungstenite::Message};
 
 
 use crate::types::PriceUpdate;
 use super::Exchange;
+use super::from_str;
 
 
 pub struct Hyperliquid;
 
+#[derive(Debug, Deserialize)]
+struct WebsocketResponse {
+    data: WebsocketResponseData
+}
+
+#[derive(Debug, Deserialize)]
+struct WebsocketResponseData {
+    levels: Option<Vec<Vec<WebsocketPrice>>>
+}
+
+#[derive(Debug, Deserialize)]
+struct WebsocketPrice {
+    #[serde(default, deserialize_with="from_str")]
+    px: Option<f64>
+}
 
 #[async_trait]
 impl Exchange for Hyperliquid {
@@ -38,18 +55,26 @@ impl Exchange for Hyperliquid {
 
         while let Some(msg) = read.next().await {
             if let Ok(Message::Text(text)) = msg { 
-                let json: Value = serde_json::from_str(&text)?;
 
-                if json["channel"] == "subscriptionResponse".to_string() {
-                    continue;
+                let response: WebsocketResponse = serde_json::from_str(&text)?;
+
+                if let Some(levels) = response.data.levels {
+                    let bids  = levels.get(0).ok_or_else(|| "Error obtaining bids orderbook")?;
+                    let asks = levels.get(1).ok_or_else(|| "Error obtaining asks orderbook")?;
+                    
+                    let best_bid = bids.get(0);
+                    let best_ask = asks.get(0);
+    
+                    match (best_bid, best_ask) {
+                        (Some(bid), Some(ask)) => {
+                            if let (Some(bid), Some(ask)) = (bid.px, ask.px) {
+                                let update = PriceUpdate::new("Hyperliquid".to_string(), bid, ask);
+                                tx.send(update).await?;
+                            }
+                        }
+                        _ => {}
+                    }
                 }
-
-                let bid = json["data"]["levels"][0][0]["px"].as_str().unwrap().parse::<f64>()?;
-                let ask = json["data"]["levels"][1][0]["px"].as_str().unwrap().parse::<f64>()?;
-
-                let update = PriceUpdate::new("Hyperliquid".to_string(), bid, ask);
-
-                tx.send(update).await?;
             }
         }
 

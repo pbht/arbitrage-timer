@@ -1,11 +1,12 @@
 use crate::types::PriceUpdate;
 use super::Exchange;
+use super::from_str;
 
 use std::error::Error;
 use async_trait::async_trait;
 use chrono::Utc;
 use futures_util::{SinkExt, StreamExt};
-use serde::{Deserialize, Deserializer};
+use serde::Deserialize;
 use serde_json::json;
 use tokio::sync::mpsc;
 use tokio_tungstenite::{connect_async, tungstenite::Message};
@@ -13,31 +14,18 @@ use tokio_tungstenite::{connect_async, tungstenite::Message};
 pub struct GateIo;
 
 #[derive(Deserialize, Debug)]
-struct GateIoResponse {
-    result: GateIoMarketData
+struct WebsocketResponse {
+    result: MarketData
 }
 
 #[derive(Deserialize, Debug)]
-struct GateIoMarketData {
+struct MarketData {
     #[serde(default, deserialize_with="from_str")]
     highest_bid: Option<f64>,
     #[serde(default, deserialize_with="from_str")]
     lowest_ask: Option<f64>
 }
 
-fn from_str<'de, D>(deserializer: D) -> Result<Option<f64>, D::Error> 
-where 
-    D: Deserializer<'de>
-{
-    let opt = Option::<String>::deserialize(deserializer)?;
-    match opt {
-        Some(s) => {
-            let num = s.parse::<f64>().map_err(serde::de::Error::custom)?;
-            Ok(Some(num))
-        }
-        None => Ok(None)
-    }
-}
 
 #[async_trait]
 impl Exchange for GateIo {
@@ -63,7 +51,7 @@ impl Exchange for GateIo {
         while let Some(msg) = read.next().await {
             if let Ok(Message::Text(text)) = msg {
 
-                let response: GateIoResponse = serde_json::from_str(&text)?;
+                let response: WebsocketResponse = serde_json::from_str(&text)?;
 
                 if let (Some(bid), Some(ask)) = (response.result.highest_bid, response.result.lowest_ask) {
                     let update = PriceUpdate::new("Gate.io".to_string(), bid, ask);

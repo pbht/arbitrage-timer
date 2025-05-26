@@ -60,7 +60,6 @@ async fn main() -> Result<(), Box<dyn Error + Send + Sync>> {
     let mut arbitrage_start: Option<DateTime<Utc>> = None;
 
     while let Some(update) = rx.recv().await {
-        // println!("[{}] : Bid: {:.2}, Ask: {:.2} @ {}", update.exchange, update.bid, update.ask, update.timestamp);
         if let (Some(ex0), Some(ex1)) = (data.get_exchange_0(), data.get_exchange_1()) {
             let is_arb = ex0.bid > ex1.ask * arb_threshold || ex1.bid > ex0.ask * arb_threshold;
         

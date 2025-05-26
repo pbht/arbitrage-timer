@@ -1,14 +1,23 @@
 use std::error::Error;
 use async_trait::async_trait;
 use futures_util::StreamExt;
-use serde_json::Value;
+use serde::Deserialize;
 use tokio::sync::mpsc;
 use tokio_tungstenite::{connect_async, tungstenite::Message};
 
 use crate::types::PriceUpdate;
 use super::Exchange;
+use super::from_str;
 
 pub struct Binance;
+
+#[derive(Debug, Deserialize)]
+struct WebsocketResponse {
+    #[serde(default, deserialize_with="from_str")]
+    b: Option<f64>,
+    #[serde(default, deserialize_with="from_str")]
+    a: Option<f64>
+}
 
 #[async_trait]
 impl Exchange for Binance {
@@ -27,14 +36,14 @@ impl Exchange for Binance {
 
         while let Some(msg) = read.next().await {
             if let Ok(Message::Text(text)) = msg {
-                let json: Value = serde_json::from_str(&text)?;
 
-                let bid = json["b"].as_str().unwrap().parse::<f64>()?;
-                let ask = json["a"].as_str().unwrap().parse::<f64>()?;
-                
-                let update = PriceUpdate::new("Binance".to_string(), bid, ask);
-                
-                tx.send(update).await?;
+                let response: WebsocketResponse = serde_json::from_str(&text)?;
+
+                if let (Some(bid), Some(ask)) = (response.b, response.a) {
+                    let update = PriceUpdate::new("Gate.io".to_string(), bid, ask);
+                    tx.send(update).await?;
+                }
+
             }
 
         }
