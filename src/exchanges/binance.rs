@@ -40,7 +40,7 @@ impl Exchange for Binance {
                 let response: WebsocketResponse = serde_json::from_str(&text)?;
 
                 if let (Some(bid), Some(ask)) = (response.b, response.a) {
-                    let update = PriceUpdate::new("Gate.io".to_string(), bid, ask);
+                    let update = PriceUpdate::new("Binance".to_string(), bid, ask);
                     tx.send(update).await?;
                 }
 
