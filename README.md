@@ -13,7 +13,7 @@ The script currently accepts the following exchange inputs:
 - `gate-io`
 
 # EXAMPLE
-`./target/release/arbitrage-timer --exchanges hyperliquid binance --ticker ETH --threshold 0.0005`
+`./target/release/arbitrage-timer --exchanges hyperliquid gate-io --ticker ETH --threshold 0.0005`
 
 Gave us the output: \
 ![Arbitrage Timer Output](assets/arbitrage-timer-demo.png)
