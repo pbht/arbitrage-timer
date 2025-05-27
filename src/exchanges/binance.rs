@@ -7,15 +7,15 @@ use tokio_tungstenite::{connect_async, tungstenite::Message};
 
 use crate::types::PriceUpdate;
 use super::Exchange;
-use super::from_str;
+use super::from_websocket;
 
 pub struct Binance;
 
 #[derive(Debug, Deserialize)]
 struct WebsocketResponse {
-    #[serde(default, deserialize_with="from_str")]
+    #[serde(default, deserialize_with="from_websocket")]
     b: Option<f64>,
-    #[serde(default, deserialize_with="from_str")]
+    #[serde(default, deserialize_with="from_websocket")]
     a: Option<f64>
 }
 

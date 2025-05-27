@@ -9,7 +9,7 @@ use tokio_tungstenite::{connect_async, tungstenite::Message};
 
 use crate::types::PriceUpdate;
 use super::Exchange;
-use super::from_str;
+use super::from_websocket;
 
 
 pub struct Hyperliquid;
@@ -26,7 +26,7 @@ struct WebsocketResponseData {
 
 #[derive(Debug, Deserialize)]
 struct WebsocketPrice {
-    #[serde(default, deserialize_with="from_str")]
+    #[serde(default, deserialize_with="from_websocket")]
     px: Option<f64>
 }
 

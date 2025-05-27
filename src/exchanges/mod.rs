@@ -1,13 +1,13 @@
 pub mod binance;
 pub mod hyperliquid;
-pub mod gateio;
+pub mod gate_io;
 
 use std::sync::Arc;
 use crate::types::{ PriceUpdate, ExchangeArg };
 
 use binance::Binance;
 use hyperliquid::Hyperliquid;
-use gateio::GateIo;
+use gate_io::GateIo;
 
 use async_trait::async_trait;
 use tokio::sync::mpsc;
@@ -15,7 +15,7 @@ use std::error::Error;
 use serde::{Deserialize, Deserializer};
 
 // Helper function to parse websocket stream values
-fn from_str<'de, D>(deserializer: D) -> Result<Option<f64>, D::Error> 
+fn from_websocket<'de, D>(deserializer: D) -> Result<Option<f64>, D::Error> 
 where 
     D: Deserializer<'de>
 {
