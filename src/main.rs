@@ -6,18 +6,19 @@ use chrono::Utc;
 use clap::Parser;
 use std::error::Error;
 use std::sync::Arc;
-use tokio::try_join;
 use tokio::sync::mpsc;
+use tokio::try_join;
 
-use types::Args;
-use types::PriceUpdate;
-use types::CombinedPriceData;
 use exchanges::Exchange;
+use types::Args;
+use types::CombinedPriceData;
+use types::PriceUpdate;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error + Send + Sync>> {
     let args = Args::parse();
-    let exchanges: Vec<Arc<dyn Exchange>> = args.exchanges
+    let exchanges: Vec<Arc<dyn Exchange>> = args
+        .exchanges
         .iter()
         .filter_map(|exchange| exchanges::get_cex(exchange))
         .collect::<Vec<Arc<dyn Exchange>>>();
@@ -52,7 +53,7 @@ async fn main() -> Result<(), Box<dyn Error + Send + Sync>> {
         }
     });
 
-    let mut data= CombinedPriceData::new();
+    let mut data = CombinedPriceData::new();
     let name_0 = exchange_0.name();
     let name_1 = exchange_1.name();
 
@@ -62,7 +63,7 @@ async fn main() -> Result<(), Box<dyn Error + Send + Sync>> {
     while let Some(update) = rx.recv().await {
         if let (Some(ex0), Some(ex1)) = (data.get_exchange_0(), data.get_exchange_1()) {
             let is_arb = ex0.bid > ex1.ask * arb_threshold || ex1.bid > ex0.ask * arb_threshold;
-        
+
             match (arbitrage_start.is_some(), is_arb) {
                 (false, true) => {
                     // Arbitrage just started
@@ -81,13 +82,12 @@ async fn main() -> Result<(), Box<dyn Error + Send + Sync>> {
                 _ => {}
             }
         }
-        
+
         if update.exchange == name_0 {
             data.set_exchange_0(update);
         } else if update.exchange == name_1 {
             data.set_exchange_1(update);
         }
-        
     }
 
     try_join!(h0, h1)?;

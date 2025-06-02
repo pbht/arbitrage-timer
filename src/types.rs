@@ -5,21 +5,19 @@ use clap::ValueEnum;
 pub enum ExchangeArg {
     Binance,
     Hyperliquid,
-    GateIo
+    GateIo,
 }
-
 
 #[derive(Parser, Debug)]
 pub struct Args {
-    #[arg(long, num_args=2, value_enum)]
+    #[arg(long, num_args = 2, value_enum)]
     pub exchanges: Vec<ExchangeArg>,
 
     #[arg(long)]
     pub ticker: String,
 
     #[arg(long, default_value_t = 0.005)]
-    pub threshold: f64
-
+    pub threshold: f64,
 }
 
 #[derive(Debug)]
@@ -29,23 +27,24 @@ pub struct PriceUpdate {
     pub ask: f64,
 }
 
-
 impl PriceUpdate {
     pub fn new(exchange: String, bid: f64, ask: f64) -> PriceUpdate {
         PriceUpdate { exchange, bid, ask }
     }
-    
 }
 
 #[derive(Debug)]
 pub struct CombinedPriceData {
     exchange_0: Option<PriceUpdate>,
-    exchange_1: Option<PriceUpdate>
+    exchange_1: Option<PriceUpdate>,
 }
 
 impl CombinedPriceData {
     pub fn new() -> Self {
-        CombinedPriceData { exchange_0: None, exchange_1: None }
+        CombinedPriceData {
+            exchange_0: None,
+            exchange_1: None,
+        }
     }
 
     pub fn set_exchange_0(&mut self, update_0: PriceUpdate) -> &mut Self {
