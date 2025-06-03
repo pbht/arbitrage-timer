@@ -59,24 +59,17 @@ impl Exchange for Hyperliquid {
                 let response: WebsocketResponse = serde_json::from_str(&text)?;
 
                 if let Some(levels) = response.data.levels {
-                    let bids = levels
-                        .get(0)
-                        .ok_or_else(|| "Error obtaining bids orderbook")?;
-                    let asks = levels
-                        .get(1)
-                        .ok_or_else(|| "Error obtaining asks orderbook")?;
+                    let bids = levels.first().ok_or("Error obtaining bids orderbook")?;
+                    let asks = levels.last().ok_or("Error obtaining asks orderbook")?;
 
-                    let best_bid = bids.get(0);
-                    let best_ask = asks.get(0);
+                    let best_bid = bids.first();
+                    let best_ask = asks.first();
 
-                    match (best_bid, best_ask) {
-                        (Some(bid), Some(ask)) => {
-                            if let (Some(bid), Some(ask)) = (bid.px, ask.px) {
-                                let update = PriceUpdate::new("Hyperliquid".to_string(), bid, ask);
-                                tx.send(update).await?;
-                            }
+                    if let (Some(bid), Some(ask)) = (best_bid, best_ask) {
+                        if let (Some(bid), Some(ask)) = (bid.px, ask.px) {
+                            let update = PriceUpdate::new("Hyperliquid".to_string(), bid, ask);
+                            tx.send(update).await?;
                         }
-                        _ => {}
                     }
                 }
             }
