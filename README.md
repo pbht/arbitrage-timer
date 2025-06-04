@@ -23,10 +23,11 @@ Gave us the output: \
 - [ ] Send Pong responses to Pings to prevent disconnection
 - [x] More robust input validation (only allows valid exchanges for inputs) 
 - [ ] Error handling for invalid tickers - need to define custom error types and handle different errors independently
-- [ ] Storage of arbitrage timings to calculate statistics such as mean and variance
+- [ ] Storage of arbitrage timings to calculate statistics such as mean and variance (MongoDB or Postgres perhaps)
 - [ ] MEXC support
 - [x] Gate.io support
 - [ ] Kucoin support
 - [ ] Bitget support
 - [ ] Bybit support
 - [ ] Scan multiple pairs concurrently
+- [ ] Make a dashboard/UI with Yew / Rocket
