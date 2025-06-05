@@ -59,8 +59,8 @@ impl Exchange for Hyperliquid {
                 let response: WebsocketResponse = serde_json::from_str(&text)?;
 
                 if let Some(levels) = response.data.levels {
-                    let bids = levels.first().ok_or("Error obtaining bids orderbook")?;
-                    let asks = levels.last().ok_or("Error obtaining asks orderbook")?;
+                    let bids = levels.first().ok_or("Error obtaining bids.")?;
+                    let asks = levels.last().ok_or("Error obtaining asks.")?;
 
                     let best_bid = bids.first();
                     let best_ask = asks.first();
