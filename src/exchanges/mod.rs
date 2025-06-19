@@ -39,10 +39,10 @@ pub trait Exchange: Send + Sync {
     ) -> Result<(), Box<dyn Error + Send + Sync>>;
 }
 
-pub fn get_cex(name: &ExchangeArg) -> Option<Arc<dyn Exchange>> {
+pub fn get_cex(name: &ExchangeArg) -> Arc<dyn Exchange> {
     match name {
-        ExchangeArg::Binance => Some(Arc::new(Binance)),
-        ExchangeArg::Hyperliquid => Some(Arc::new(Hyperliquid)),
-        ExchangeArg::GateIo => Some(Arc::new(GateIo)),
+        ExchangeArg::Binance => Arc::new(Binance),
+        ExchangeArg::Hyperliquid => Arc::new(Hyperliquid),
+        ExchangeArg::GateIo => Arc::new(GateIo),
     }
 }

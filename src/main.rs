@@ -20,7 +20,7 @@ async fn main() -> Result<(), Box<dyn Error + Send + Sync>> {
     let exchanges: Vec<Arc<dyn Exchange>> = args
         .exchanges
         .iter()
-        .filter_map(|exchange| exchanges::get_cex(exchange))
+        .map(|exchange| exchanges::get_cex(exchange))
         .collect::<Vec<Arc<dyn Exchange>>>();
 
     let ticker = args.ticker;
@@ -72,7 +72,7 @@ async fn main() -> Result<(), Box<dyn Error + Send + Sync>> {
                 }
                 (true, false) => {
                     // Arbitrage just ended
-                    let started = arbitrage_start.take().unwrap(); // take the value and reset to None
+                    let started = arbitrage_start.take().unwrap();
                     let duration = Utc::now() - started;
                     println!(
                         "Arbitrage ended. Duration: {} ms",
