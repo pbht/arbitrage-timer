@@ -30,4 +30,4 @@ Gave us the output: \
 - [ ] Bitget support
 - [ ] Bybit support
 - [ ] Scan multiple pairs concurrently
-- [ ] Make a dashboard/UI with Yew / Rocket
+- [ ] Make a dashboard/UI with Yew/Rocket
